@@ -522,6 +522,40 @@
       opacity: 1;
       visibility: visible;
     }
+
+    /* Status indicator for Google Sheets sync */
+    .sync-status {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 10px 15px;
+      box-shadow: var(--shadow);
+      font-size: 14px;
+      display: none;
+      z-index: 80;
+      animation: fadeIn 0.3s;
+    }
+
+    .sync-status.show {
+      display: flex;
+      align-items: center;
+    }
+
+    .sync-status.success {
+      color: var(--outdoor);
+      border-left: 3px solid var(--outdoor);
+    }
+
+    .sync-status.error {
+      color: var(--booked);
+      border-left: 3px solid var(--booked);
+    }
+
+    .sync-status i {
+      margin-right: 8px;
+    }
     
     /* Responsive Styles */
     @media (max-width: 768px) {
@@ -646,6 +680,11 @@
 
   <!-- Overlay -->
   <div class="overlay" id="overlay"></div>
+
+  <!-- Sync Status Indicator -->
+  <div class="sync-status" id="sync-status">
+    <!-- Status message will be shown here -->
+  </div>
 
   <script>
     // Court data
@@ -792,6 +831,10 @@
     const confirmBtn = document.getElementById('confirm-btn');
     const bookingConfirmation = document.getElementById('booking-confirmation');
     const referenceNumber = document.getElementById('reference-number');
+    const syncStatus = document.getElementById('sync-status');
+
+    // Google Sheets Web App URL
+    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbydG7prhM1QFSX7Cn4O5cY9y4K2Q9LNeg2AWveJWmNBzweLgecqTBxyJ9Bf_elKxElo/exec';
 
     // App State
     let activeFilter = 'all';
@@ -1004,6 +1047,73 @@
       return reference;
     }
 
+    // Function to send booking data to Google Sheets
+    function saveBookingToSheet(bookingData) {
+      // Show loading status
+      showSyncStatus('Saving booking...', 'loading');
+      
+      // Send data to Google Sheets
+      fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Important for CORS issues
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData)
+      })
+      .then(response => {
+        console.log('Booking request sent to Google Sheets');
+        showSyncStatus('Booking saved successfully!', 'success');
+      })
+      .catch(error => {
+        console.error('Error saving booking to Google Sheets:', error);
+        showSyncStatus('Error saving to database. Booking saved locally.', 'error');
+        // Save booking locally as backup
+        backupBookingLocally(bookingData);
+      });
+    }
+
+    // Backup function for when Google Sheets is unavailable
+    function backupBookingLocally(bookingData) {
+      // Get existing bookings from localStorage
+      const existingBookings = JSON.parse(localStorage.getItem('padelBookings') || '[]');
+      
+      // Add new booking
+      existingBookings.push({
+        ...bookingData,
+        savedToSheet: false,
+        timestamp: new Date().toISOString()
+      });
+      
+      // Save back to localStorage
+      localStorage.setItem('padelBookings', JSON.stringify(existingBookings));
+      console.log('Booking saved to local backup');
+    }
+
+    // Show sync status notification
+    function showSyncStatus(message, type) {
+      syncStatus.innerHTML = '';
+      syncStatus.classList.remove('success', 'error');
+      
+      if (type === 'loading') {
+        syncStatus.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message}`;
+      } else if (type === 'success') {
+        syncStatus.classList.add('success');
+        syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+      } else if (type === 'error') {
+        syncStatus.classList.add('error');
+        syncStatus.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+      }
+      
+      syncStatus.classList.add('show');
+      
+      // Hide after 5 seconds
+      setTimeout(() => {
+        syncStatus.classList.remove('show');
+      }, 5000);
+    }
+
     // Event Listeners
     filterButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -1040,6 +1150,26 @@
         return;
       }
       
+      // Generate booking reference
+      const bookingId = generateReference();
+      
+      // Prepare booking data
+      const bookingData = {
+        bookingId: bookingId,
+        courtName: selectedCourt.name,
+        courtLocation: selectedCourt.location,
+        courtType: selectedCourt.type,
+        bookingDate: formatDateForDisplay(bookingDateInput.value),
+        timeSlot: selectedTime,
+        customerName: name,
+        customerPhone: phone,
+        customerEmail: email,
+        price: selectedCourt.price
+      };
+      
+      // Save to Google Sheets
+      saveBookingToSheet(bookingData);
+      
       // Mark slot as booked
       if (selectedTimeElement) {
         selectedTimeElement.classList.remove('selected');
@@ -1047,11 +1177,8 @@
         selectedTimeElement.removeEventListener('click', () => {});
       }
       
-      // Generate and display booking reference
-      const reference = generateReference();
-      referenceNumber.textContent = reference;
-      
-      // Show confirmation and hide form button
+      // Display confirmation
+      referenceNumber.textContent = bookingId;
       bookingConfirmation.classList.add('show');
       confirmBtn.style.display = 'none';
       
@@ -1069,8 +1196,53 @@
       overlay.classList.remove('active');
     }
 
+    // Function to retry sending unsaved bookings
+    function retrySendingUnsavedBookings() {
+      const unsavedBookings = JSON.parse(localStorage.getItem('padelBookings') || '[]')
+        .filter(booking => !booking.savedToSheet);
+      
+      if (unsavedBookings.length > 0) {
+        console.log(`Attempting to send ${unsavedBookings.length} unsaved bookings...`);
+        
+        unsavedBookings.forEach((booking, index) => {
+          setTimeout(() => {
+            fetch(SHEETS_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              cache: 'no-cache',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(booking)
+            })
+            .then(() => {
+              console.log(`Successfully sent booking ${booking.bookingId}`);
+              // Mark as saved in local storage
+              const allBookings = JSON.parse(localStorage.getItem('padelBookings') || '[]');
+              const bookingIndex = allBookings.findIndex(b => b.bookingId === booking.bookingId);
+              if (bookingIndex !== -1) {
+                allBookings[bookingIndex].savedToSheet = true;
+                localStorage.setItem('padelBookings', JSON.stringify(allBookings));
+              }
+            })
+            .catch(error => {
+              console.error(`Failed to send booking ${booking.bookingId}:`, error);
+            });
+          }, index * 2000); // Stagger requests to avoid overloading
+        });
+      }
+    }
+
     // Initialize
-    displayCourts();
+    document.addEventListener('DOMContentLoaded', () => {
+      displayCourts();
+      
+      // Try to send any unsaved bookings when page loads
+      retrySendingUnsavedBookings();
+    });
+
+    // Check for unsaved bookings periodically
+    setInterval(retrySendingUnsavedBookings, 5 * 60 * 1000); // Check every 5 minutes
   </script>
 </body>
 </html>
