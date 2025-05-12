@@ -1,938 +1,1076 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Padel Lahore | Book Courts Instantly</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Core Variables */
-        :root {
-            --primary: #00AA96;
-            --secondary: #103751;
-            --dark: #0D2C3E;
-            --light: #F8F9FA;
-            --accent: #FFC857;
-            --gray: #555B6E;
-            --light-gray: #f0f2f5;
-            --white: #ffffff;
-            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
-        /* Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', 'Segoe UI', sans-serif;
-        }
-
-        body {
-            background-color: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 30px;
-        }
-
-        h1, h2, h3 {
-            font-weight: 700;
-            line-height: 1.2;
-            color: var(--secondary);
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--primary);
-            transition: var(--transition);
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 14px 32px;
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn:hover {
-            background: var(--secondary);
-            color: var(--white);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Header Styles */
-        header {
-            background-color: var(--white);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 20px 0;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--secondary);
-            display: flex;
-            align-items: center;
-        }
-
-        .logo span {
-            color: var(--primary);
-        }
-
-        .logo-icon {
-            margin-right: 10px;
-            font-size: 32px;
-            color: var(--primary);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links li {
-            margin-left: 40px;
-        }
-
-        .nav-links a {
-            color: var(--secondary);
-            font-weight: 500;
-            position: relative;
-            padding: 5px 0;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--primary);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            left: 0;
-            bottom: 0;
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after, .nav-links a.active::after {
-            width: 100%;
-        }
-
-        .mobile-toggle {
-            display: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--secondary);
-        }
-
-        /* Main Content */
-        main {
-            margin-top: 85px;
-            min-height: calc(100vh - 180px);
-        }
-
-        .page {
-            display: none;
-            padding: 60px 0;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        /* Home Page */
-        .hero {
-            height: 60vh;
-            background: linear-gradient(rgba(13, 44, 62, 0.8), rgba(13, 44, 62, 0.8)), url('https://images.unsplash.com/photo-1631457914000-c92e7dbe9b72?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixid=MnwxfDB8MXxyYW5kb218MHx8cGFkZWx8fHx8fHwxNjg1NDc2Mzkz&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1920');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            color: var(--white);
-            position: relative;
-        }
-
-        .hero-content {
-            max-width: 800px;
-        }
-
-        .hero h1 {
-            color: var(--white);
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            color: var(--light);
-        }
-
-        .search-container {
-            margin-top: 50px;
-            background: var(--white);
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: var(--box-shadow);
-        }
-
-        .search-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 15px;
-        }
-
-        .search-input {
-            padding: 14px 16px;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            font-size: 16px;
-            background-color: var(--light);
-        }
-
-        .search-input:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-
-        /* Courts Page */
-        .courts-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .courts-header h2 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .courts-filters {
-            display: flex;
-            gap: 15px;
-        }
-
-        .filter-btn {
-            padding: 8px 20px;
-            background: var(--white);
-            border: 1px solid var(--light-gray);
-            border-radius: 25px;
-            color: var(--gray);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--primary);
-            color: var(--white);
-            border-color: var(--primary);
-        }
-
-        .courts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-        }
-
-        .court-card {
-            background: var(--white);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--box-shadow);
-            transition: var(--transition);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .court-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .court-image {
-            height: 220px;
-            position: relative;
-        }
-
-        .court-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .court-price {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--accent);
-            color: var(--dark);
-            padding: 8px 15px;
-            border-radius: 25px;
-            font-weight: 600;
-        }
-
-        .court-info {
-            padding: 25px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .court-name {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-        }
-
-        .court-location {
-            color: var(--gray);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .court-location i {
-            margin-right: 8px;
-            color: var(--primary);
-        }
-
-        .court-amenities {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .court-amenity {
-            display: flex;
-            align-items: center;
-            color: var(--gray);
-            font-size: 14px;
-            background: var(--light-gray);
-            padding: 5px 10px;
-            border-radius: 4px;
-        }
-
-        .court-amenity i {
-            color: var(--primary);
-            margin-right: 5px;
-        }
-
-        .court-description {
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-
-        .court-footer {
-            margin-top: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid var(--light-gray);
-            padding-top: 15px;
-        }
-
-        .court-rating {
-            display: flex;
-            align-items: center;
-        }
-
-        .court-rating i {
-            color: #FFD700;
-            margin-right: 5px;
-        }
-
-        .court-availability {
-            color: #2ECC71;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        /* Booking Page */
-        .booking-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .booking-form {
-            background: var(--white);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: var(--box-shadow);
-        }
-
-        .booking-summary {
-            background: var(--white);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: var(--box-shadow);
-            position: sticky;
-            top: 120px;
-            height: fit-content;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--secondary);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: var(--transition);
-            background-color: var(--light);
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .time-slots {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .time-slot {
-            border: 1px solid #e2e8f0;
-            padding: 10px;
-            border-radius: 6px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .time-slot:hover {
-            border-color: var(--primary);
-        }
-
-        .time-slot.selected {
-            background-color: var(--primary);
-            color: var(--white);
-            border-color: var(--primary);
-        }
-
-        .booking-summary h3 {
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .summary-item.total {
-            border-top: 1px solid #e2e8f0;
-            margin-top: 20px;
-            padding-top: 15px;
-            font-weight: 600;
-            font-size: 18px;
-        }
-
-        .summary-court {
-            margin-top: 30px;
-            background-color: var(--light-gray);
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        /* Confirmation Page */
-        .confirmation-container {
-            max-width: 700px;
-            margin: 0 auto;
-            background: var(--white);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--box-shadow);
-        }
-
-        .confirmation-header {
-            background: var(--primary);
-            color: var(--white);
-            padding: 40px;
-            text-align: center;
-        }
-
-        .confirmation-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            width: 100px;
-            height: 100px;
-            line-height: 100px;
-            border-radius: 50%;
-        }
-
-        .confirmation-header h1 {
-            color: var(--white);
-            margin-bottom: 10px;
-        }
-
-        .confirmation-details {
-            padding: 40px;
-        }
-
-        .booking-id {
-            padding: 20px;
-            background-color: var(--light-gray);
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .booking-id h3 {
-            margin-bottom: 10px;
-        }
-
-        .booking-id p {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--primary);
-            letter-spacing: 1px;
-        }
-
-        .confirmation-info {
-            margin-bottom: 30px;
-        }
-
-        .confirmation-info-item {
-            display: flex;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-
-        .confirmation-info-item i {
-            color: var(--primary);
-            margin-right: 15px;
-            font-size: 18px;
-            width: 24px;
-        }
-
-        .confirmation-info-label {
-            font-weight: 600;
-            width: 120px;
-        }
-
-        .confirmation-footer {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--secondary);
-            color: var(--light);
-            padding: 30px 0;
-            text-align: center;
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .search-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .booking-container {
-                grid-template-columns: 1fr;
-            }
-
-            .booking-summary {
-                position: static;
-                order: -1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-
-            .mobile-toggle {
-                display: block;
-            }
-
-            .nav-links {
-                position: fixed;
-                top: 85px;
-                left: 0;
-                width: 100%;
-                flex-direction: column;
-                background: var(--white);
-                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-                padding: 20px 0;
-                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-                transition: var(--transition);
-                z-index: 999;
-            }
-
-            .nav-links.active {
-                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            }
-
-            .nav-links li {
-                margin: 15px 30px;
-            }
-
-            .hero {
-                height: auto;
-                padding: 80px 0;
-            }
-
-            .courts-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
-
-            .courts-filters {
-                overflow-x: auto;
-                padding-bottom: 10px;
-                width: 100%;
-            }
-
-            .courts-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .time-slots {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Padel Courts in Lahore</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Variables */
+    :root {
+      --primary: #00AA96;
+      --primary-light: #E5F6F4;
+      --primary-dark: #008C7A;
+      --secondary: #103751;
+      --accent: #FFC857;
+      --light-bg: #F5F7FA;
+      --card-bg: #FFFFFF;
+      --text-dark: #2D3748;
+      --text-muted: #718096;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px rgba(0,0,0,0.07);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+      --radius-sm: 6px;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --transition: all 0.3s ease;
+      --indoor: #3498db;
+      --outdoor: #2ecc71;
+      --booked: #e74c3c;
+    }
+    
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--light-bg);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    a:hover {
+      color: var(--primary-dark);
+    }
+    
+    button {
+      cursor: pointer;
+      font-family: inherit;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header */
+    .header {
+      background-color: var(--card-bg);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 15px 0;
+    }
+    
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--secondary);
+    }
+    
+    .logo span {
+      color: var(--primary);
+    }
+    
+    .date-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .date-input {
+      padding: 8px 12px;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+    }
+    
+    /* Main Content */
+    .main {
+      padding: 30px 0;
+    }
+    
+    .page-title {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--secondary);
+      font-size: 32px;
+      font-weight: 700;
+    }
+    
+    /* Filter & Control */
+    .controls {
+      margin-bottom: 25px;
+    }
+    
+    .controls-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+      background-color: var(--card-bg);
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    
+    .filter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    
+    .filter-btn.active {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .area-select {
+      padding: 8px 12px;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      min-width: 150px;
+    }
+    
+    /* Court Cards */
+    .courts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+    }
+    
+    .court-card {
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    
+    .court-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .court-header {
+      background-color: var(--secondary);
+      color: white;
+      padding: 15px 20px;
+      position: relative;
+    }
+    
+    .court-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-right: 70px;
+    }
+    
+    .court-type {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .court-type.indoor {
+      background-color: var(--indoor);
+    }
+    
+    .court-type.outdoor {
+      background-color: var(--outdoor);
+    }
+    
+    .court-body {
+      padding: 20px;
+    }
+    
+    .court-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .info-item {
+      display: flex;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    
+    .info-item i {
+      margin-right: 6px;
+      color: var(--primary);
+    }
+    
+    .court-price {
+      font-weight: 600;
+      color: var(--accent);
+    }
+    
+    .court-divider {
+      height: 1px;
+      background-color: #E2E8F0;
+      margin: 15px 0;
+    }
+    
+    /* Time Slots */
+    .slots-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .slots-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--secondary);
+    }
+    
+    .slots-legend {
+      display: flex;
+      gap: 15px;
+      font-size: 12px;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+    }
+    
+    .legend-color {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    
+    .legend-available {
+      background-color: var(--primary-light);
+    }
+    
+    .legend-booked {
+      background-color: #FFEEEE;
+    }
+    
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+    }
+    
+    .time-slot {
+      padding: 10px;
+      text-align: center;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      background-color: var(--primary-light);
+      border: 1px solid #E2E8F0;
+    }
+    
+    .time-slot:hover:not(.booked) {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .time-slot.booked {
+      background-color: #FFEEEE;
+      color: var(--booked);
+      cursor: not-allowed;
+      text-decoration: line-through;
+      border-color: #FFD8D8;
+    }
+    
+    .time-slot.selected {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      position: relative;
+    }
+    
+    .time-slot.selected::after {
+      content: '✓';
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: var(--primary-dark);
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    
+    .court-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+    
+    .website-link {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .website-link i {
+      margin-right: 6px;
+    }
+    
+    /* Booking Slide Panel */
+    .booking-panel {
+      position: fixed;
+      top: 0;
+      right: -450px;
+      width: 450px;
+      height: 100%;
+      background-color: var(--card-bg);
+      box-shadow: var(--shadow-lg);
+      z-index: 100;
+      transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      padding: 30px;
+      overflow-y: auto;
+    }
+    
+    .booking-panel.open {
+      right: 0;
+    }
+    
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .panel-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--secondary);
+    }
+    
+    .panel-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--text-muted);
+    }
+    
+    .booking-details {
+      background-color: var(--primary-light);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    
+    .detail-item {
+      margin-bottom: 12px;
+      display: flex;
+    }
+    
+    .detail-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .detail-label {
+      font-weight: 600;
+      width: 100px;
+    }
+    
+    .booking-form {
+      margin-top: 25px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius);
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+    }
+    
+    .btn:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+    
+    .booking-confirmation {
+      display: none;
+      background-color: var(--primary-light);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-top: 25px;
+      text-align: center;
+    }
+    
+    .booking-confirmation.show {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .confirmation-icon {
+      font-size: 48px;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+    
+    .reference-number {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-top: 10px;
+    }
+    
+    /* Overlay when panel is open */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 90;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .controls-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .filter-group {
+        justify-content: center;
+      }
+      
+      .area-select {
+        width: 100%;
+      }
+      
+      .courts-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .booking-panel {
+        width: 100%;
+        right: -100%;
+      }
+      
+      .court-info {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .time-slots {
+        grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header id="header">
-        <div class="container">
-            <nav class="navbar">
-                <a href="#" class="logo"><i class="fas fa-table-tennis logo-icon"></i> Padel<span>Lahore</span></a>
-                <div class="mobile-toggle" id="mobile-toggle">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <ul class="nav-links" id="nav-links">
-                    <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
-                    <li><a href="#" class="nav-link" data-page="courts">Courts</a></li>
-                    <li><a href="#" class="nav-link" data-page="booking">Book Now</a></li>
-                </ul>
-            </nav>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <div class="logo">Padel<span>Lahore</span></div>
+        <div class="date-selector">
+          <label for="booking-date">Date:</label>
+          <input type="date" id="booking-date" class="date-input">
         </div>
-    </header>
+      </div>
+    </div>
+  </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Home Page -->
-        <section id="home" class="page active">
-            <!-- Hero Section -->
-            <div class="hero">
-                <div class="container">
-                    <div class="hero-content">
-                        <h1>Book Padel Courts in Lahore</h1>
-                        <p>Find and reserve the best padel courts across Lahore with just a few clicks</p>
-                        <a href="#" class="btn" id="view-courts-btn">View All Courts</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Search -->
-            <div class="container">
-                <div class="search-container">
-                    <div class="search-grid">
-                        <select class="search-input">
-                            <option value="">Select Area</option>
-                            <option value="dha">DHA</option>
-                            <option value="gulberg">Gulberg</option>
-                            <option value="johar">Johar Town</option>
-                            <option value="bahria">Bahria Town</option>
-                            <option value="model">Model Town</option>
-                            <option value="cantt">Cantt</option>
-                        </select>
-                        <input type="date" class="search-input" placeholder="Select Date">
-                        <button class="btn">Find Courts</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Courts Page -->
-        <section id="courts" class="page">
-            <div class="container">
-                <div class="courts-header">
-                    <div>
-                        <h2>Padel Courts in Lahore</h2>
-                        <p>Book your court instantly</p>
-                    </div>
-                    
-                    <div class="courts-filters">
-                        <button class="filter-btn active">All</button>
-                        <button class="filter-btn">DHA</button>
-                        <button class="filter-btn">Gulberg</button>
-                        <button class="filter-btn">Bahria</button>
-                        <button class="filter-btn">Johar Town</button>
-                        <button class="filter-btn">Model Town</button>
-                    </div>
-                </div>
-                
-                <div class="courts-grid" id="courts-container">
-                    <!-- Courts will be dynamically added here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Booking Page -->
-        <section id="booking" class="page">
-            <div class="container">
-                <h2>Book Your Court</h2>
-                <p>Complete your reservation in a few simple steps</p>
-                
-                <div class="booking-container">
-                    <div class="booking-form">
-                        <form id="booking-form">
-                            <div class="form-group">
-                                <label class="form-label" for="court-select">Select Court</label>
-                                <select id="court-select" class="form-control" required>
-                                    <option value="">-- Select a Court --</option>
-                                    <!-- Options will be dynamically added here -->
-                                </select>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label" for="booking-date">Date</label>
-                                    <input type="date" id="booking-date" class="form-control" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Time Slot</label>
-                                    <div class="time-slots" id="time-slots">
-                                        <!-- Time slots will be dynamically added here -->
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label" for="customer-name">Your Name</label>
-                                <input type="text" id="customer-name" class="form-control" required>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label" for="customer-phone">Phone Number</label>
-                                    <input type="tel" id="customer-phone" class="form-control" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="customer-email">Email</label>
-                                    <input type="email" id="customer-email" class="form-control" required>
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn">Confirm Booking</button>
-                        </form>
-                    </div>
-                    
-                    <div class="booking-summary">
-                        <h3>Booking Summary</h3>
-                        
-                        <div id="booking-details">
-                            <div class="summary-item">
-                                <span>Court</span>
-                                <span id="summary-court-name">-</span>
-                            </div>
-                            
-                            <div class="summary-item">
-                                <span>Date</span>
-                                <span id="summary-date">-</span>
-                            </div>
-                            
-                            <div class="summary-item">
-                                <span>Time</span>
-                                <span id="summary-time">-</span>
-                            </div>
-                            
-                            <div class="summary-item">
-                                <span>Duration</span>
-                                <span>1 Hour</span>
-                            </div>
-                            
-                            <div class="summary-item total">
-                                <span>Total</span>
-                                <span id="summary-price">-</span>
-                            </div>
-                        </div>
-                        
-                        <div class="summary-court" id="summary-court-details">
-                            <p>Please select a court to see details</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Confirmation Page -->
-        <section id="confirmation" class="page">
-            <div class="container">
-                <div class="confirmation-container">
-                    <div class="confirmation-header">
-                        <div class="confirmation-icon">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <h1>Booking Confirmed!</h1>
-                        <p>Your padel court has been reserved successfully</p>
-                    </div>
-                    
-                    <div class="confirmation-details">
-                        <div class="booking-id">
-                            <h3>Booking Reference</h3>
-                            <p id="booking-reference">PL-25789</p>
-                        </div>
-                        
-                        <div class="confirmation-info">
-                            <div class="confirmation-info-item">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span class="confirmation-info-label">Court:</span>
-                                <span id="conf-court-name">Padel Park - DHA Phase 5</span>
-                            </div>
-                            
-                            <div class="confirmation-info-item">
-                                <i class="far fa-calendar-alt"></i>
-                                <span class="confirmation-info-label">Date:</span>
-                                <span id="conf-date">May 15, 2025</span>
-                            </div>
-                            
-                            <div class="confirmation-info-item">
-                                <i class="far fa-clock"></i>
-                                <span class="confirmation-info-label">Time:</span>
-                                <span id="conf-time">18:00 - 19:00</span>
-                            </div>
-                            
-                            <div class="confirmation-info-item">
-                                <i class="fas fa-user"></i>
-                                <span class="confirmation-info-label">Name:</span>
-                                <span id="conf-name">Ahmed Khan</span>
-                            </div>
-                            
-                            <div class="confirmation-info-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span class="confirmation-info-label">Amount:</span>
-                                <span id="conf-price">Rs. 3,000</span>
-                            </div>
-                        </div>
-                        
-                        <div class="confirmation-footer">
-                            <p>A confirmation SMS and email have been sent to you</p>
-                            <button class="btn" id="book-another-btn">Book Another Court</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 PadelLahore. All rights reserved.</p>
+  <!-- Main Content -->
+  <main class="main">
+    <div class="container">
+      <h1 class="page-title">Book Padel Courts in Lahore</h1>
+      
+      <!-- Controls -->
+      <section class="controls">
+        <div class="controls-inner">
+          <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">All Courts</button>
+            <button class="filter-btn" data-filter="indoor">Indoor</button>
+            <button class="filter-btn" data-filter="outdoor">Outdoor</button>
+          </div>
+          
+          <select class="area-select" id="area-filter">
+            <option value="all">All Areas</option>
+            <option value="dha">DHA</option>
+            <option value="gulberg">Gulberg</option>
+            <option value="johar">Johar Town</option>
+            <option value="model">Model Town</option>
+            <option value="askari">Askari</option>
+            <option value="valencia">Valencia</option>
+          </select>
         </div>
-    </footer>
+      </section>
+      
+      <!-- Courts Grid -->
+      <section class="courts-grid" id="courts-container">
+        <!-- Courts will be dynamically added here -->
+      </section>
+    </div>
+  </main>
 
-    <script>
-        // Sample Data - In a real app, this would come from a backend
-        const courts = [
-            {
-                id: 1,
-                name: "Padel Park",
-                location: "DHA Phase 5, Lahore",
-                price: "Rs. 3,000",
-                description: "Premier padel facility with three professional courts, night lighting, and coaching services.",
-                image: "https://images.unsplash.com/photo-1631457914000-c92e7dbe9b72?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&ixid=MnwxfDB8MXxyYW5kb218MHx8cGFkZWx8fHx8fHwxNjg1NDc2Mzkz&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=800",
-                rating: 4.9,
-                area: "dha",
-                amenities: ["Night Lighting", "Coaching", "Equipment Rental"],
-                available: true
-            },
-            {
-                id: 2,
-                name: "Padel Hub",
-                location: "Valencia Town, Lahore",
-                price: "Rs. 2,500",
-                description: "Two glass-walled courts with advanced booking system and equipment rental available.",
-                image: "https://images.unsplash.com/photo-1626064736888-887c3a25d75b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&ixid=MnwxfDB8MXxyYW5kb218MHx8cGFkZWx8fHx8fHwxNjg1NDc2Mzkz&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=800",
-                rating: 4.7,
-                area: "valencia",
-                amenities: ["Glass Courts", "Parking", "Pro Shop"],
-                available: true
-            },
-            {
-                id: 3,
-                name: "Eighteen Padel Courts",
-                location: "Eighteen, Lahore",
-                price: "Rs. 3,200",
-                description: "Luxury padel facility in the Eighteen development with premium amenities.",
-                image: "https://images.unsplash.com/photo-1622279488885-83ea355a07f7?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&ixid=MnwxfDB8MXxyYW5kb218MHx8cGFkZWx8fHx8fHwxNjg1NDc2Mzkz&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=800",
-                rating: 4.8,
-                area: "eighteen",
-                amenities: ["Premium Courts", "Club House", "Showers"],
-                available: true
-            },
-            {
-                id: 4,
-                name: "Padel Station",
-                location: "
+  <!-- Booking Panel -->
+  <div class="booking-panel" id="booking-panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Complete Booking</h2>
+      <button class="panel-close" id="panel-close">&times;</button>
+    </div>
+    
+    <div class="booking-details" id="booking-details">
+      <!-- Details will be filled dynamically -->
+    </div>
+    
+    <form class="booking-form" id="booking-form">
+      <div class="form-group">
+        <label class="form-label" for="name">Your Name</label>
+        <input type="text" class="form-control" id="name" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="phone">Phone Number</label>
+        <input type="tel" class="form-control" id="phone" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input type="email" class="form-control" id="email" required>
+      </div>
+      
+      <button type="submit" class="btn btn-block" id="confirm-btn">Confirm Booking</button>
+    </form>
+    
+    <div class="booking-confirmation" id="booking-confirmation">
+      <div class="confirmation-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <p>Your booking has been successfully confirmed!</p>
+      <div class="reference-number" id="reference-number">PB123456</div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <script>
+    // Court data
+    const courts = [
+      { 
+        id: 1,
+        name: "Padel Café", 
+        location: "DHA Phase 5",
+        area: "dha",
+        courts: 2, 
+        type: "Outdoor", 
+        price: "Rs. 3,000/hr",
+        website: "https://padelcafe.pk/"
+      },
+      { 
+        id: 2,
+        name: "Padel Park Lahore", 
+        location: "Valencia Town",
+        area: "valencia",
+        courts: 2, 
+        type: "Outdoor", 
+        price: "Rs. 2,500/hr",
+        website: "https://www.padelparkpk.com/"
+      },
+      { 
+        id: 3,
+        name: "Club Padel", 
+        location: "Goldcrest Mall, Gulberg",
+        area: "gulberg",
+        courts: 3, 
+        type: "Indoor", 
+        price: "Rs. 3,200/hr",
+        website: "https://clubpadel.pk/"
+      },
+      { 
+        id: 4,
+        name: "The Courts", 
+        location: "Gulberg III",
+        area: "gulberg",
+        courts: 2, 
+        type: "Indoor", 
+        price: "Rs. 2,800/hr",
+        website: "https://www.thecourts.pk/"
+      },
+      { 
+        id: 5,
+        name: "Padel Zone (JumpZone)", 
+        location: "DHA Phase 6",
+        area: "dha",
+        courts: 2, 
+        type: "Outdoor", 
+        price: "Rs. 2,700/hr",
+        website: "https://jumpzonepk.com/padel-zone/"
+      },
+      { 
+        id: 6,
+        name: "The Padel Club", 
+        location: "DHA Phase 8",
+        area: "dha",
+        courts: 2, 
+        type: "Outdoor", 
+        price: "Rs. 3,000/hr",
+        website: "https://thepadelclub.pk/"
+      },
+      { 
+        id: 7,
+        name: "Padel Pro by LST", 
+        location: "Burki Road",
+        area: "burki",
+        courts: 2, 
+        type: "Outdoor", 
+        price: "Rs. 2,500/hr",
+        website: "https://padelpro.pk/"
+      },
+      { 
+        id: 8,
+        name: "Padel Pro by LST", 
+        location: "Askari 11",
+        area: "askari",
+        courts: 2, 
+        type: "Outdoor", 
+        price: "Rs. 2,400/hr",
+        website: "https://padelpro.pk/"
+      },
+      { 
+        id: 9,
+        name: "Padel Pad", 
+        location: "Johar Town",
+        area: "johar",
+        courts: 2, 
+        type: "Outdoor", 
+        price: "Rs. 2,200/hr",
+        website: "https://padelpadpk.com/"
+      },
+      { 
+        id: 10,
+        name: "FR Padel DHA", 
+        location: "DHA Phase 4",
+        area: "dha",
+        courts: 2, 
+        type: "Indoor", 
+        price: "Rs. 2,900/hr",
+        website: "https://futsalrange.com/futsal-details/4/Futsalrange-Padel-Arena-Lahore"
+      },
+      { 
+        id: 11,
+        name: "Sky Padel", 
+        location: "Model Town",
+        area: "model",
+        courts: 1, 
+        type: "Outdoor", 
+        price: "Rs. 2,600/hr",
+        website: "https://www.instagram.com/skypadelpk/"
+      }
+    ];
+
+    // Time slots
+    const timeSlots = [
+      "08:00 - 09:00", 
+      "09:00 - 10:00", 
+      "10:00 - 11:00",
+      "11:00 - 12:00", 
+      "12:00 - 13:00", 
+      "13:00 - 14:00",
+      "14:00 - 15:00", 
+      "15:00 - 16:00", 
+      "16:00 - 17:00",
+      "17:00 - 18:00", 
+      "18:00 - 19:00", 
+      "19:00 - 20:00", 
+      "20:00 - 21:00"
+    ];
+
+    // DOM Elements
+    const courtsContainer = document.getElementById('courts-container');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const areaFilter = document.getElementById('area-filter');
+    const bookingDateInput = document.getElementById('booking-date');
+    const bookingPanel = document.getElementById('booking-panel');
+    const overlay = document.getElementById('overlay');
+    const panelClose = document.getElementById('panel-close');
+    const bookingDetails = document.getElementById('booking-details');
+    const bookingForm = document.getElementById('booking-form');
+    const confirmBtn = document.getElementById('confirm-btn');
+    const bookingConfirmation = document.getElementById('booking-confirmation');
+    const referenceNumber = document.getElementById('reference-number');
+
+    // App State
+    let activeFilter = 'all';
+    let activeArea = 'all';
+    let selectedCourt = null;
+    let selectedDate = new Date();
+    let selectedTime = null;
+    let selectedTimeElement = null;
+
+    // Set today's date
+    const today = new Date();
+    const formattedToday = formatDateForInput(today);
+    bookingDateInput.value = formattedToday;
+    bookingDateInput.min = formattedToday;
+
+    // Format date for date input
+    function formatDateForInput(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    // Format date for display
+    function formatDateForDisplay(dateString) {
+      const date = new Date(dateString);
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    }
+
+    // Display courts based on filters
+    function displayCourts() {
+      courtsContainer.innerHTML = '';
+      
+      // Filter courts
+      let filteredCourts = courts;
+      
+      if (activeFilter !== 'all') {
+        filteredCourts = filteredCourts.filter(court => 
+          court.type.toLowerCase() === activeFilter.toLowerCase()
+        );
+      }
+      
+      if (activeArea !== 'all') {
+        filteredCourts = filteredCourts.filter(court => 
+          court.area.toLowerCase() === activeArea.toLowerCase()
+        );
+      }
+      
+      // Display message if no courts found
+      if (filteredCourts.length === 0) {
+        courtsContainer.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 40px; background: white; border-radius: 12px;">
+            <p>No courts found matching your filters. Please try different filters.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Create court cards
+      filteredCourts.forEach(court => {
+        const card = document.createElement('div');
+        card.className = 'court-card';
+        
+        card.innerHTML = `
+          <div class="court-header">
+            <h3 class="court-title">${court.name}</h3>
+            <span class="court-type ${court.type.toLowerCase()}">${court.type}</span>
+          </div>
+          
+          <div class="court-body">
+            <div class="court-info">
+              <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                ${court.location}
+              </div>
+              
+              <div class="info-item">
+                <i class="fas fa-table-tennis"></i>
+                ${court.courts} ${court.courts > 1 ? 'courts' : 'court'}
+              </div>
+              
+              <div class="info-item court-price">
+                <i class="fas fa-tag"></i>
+                ${court.price}
+              </div>
+            </div>
+            
+            <div class="court-divider"></div>
+            
+            <div class="slots-header">
+              <div class="slots-title">Available Times</div>
+              <div class="slots-legend">
+                <div class="legend-item">
+                  <div class="legend-color legend-available"></div>
+                  <span>Available</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color legend-booked"></div>
+                  <span>Booked</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="time-slots" id="slots-court-${court.id}">
+              <!-- Time slots will be added here -->
+            </div>
+            
+            <div class="court-actions">
+              <a href="${court.website}" target="_blank" class="website-link">
+                <i class="fas fa-external-link-alt"></i>
+                Visit Website
+              </a>
+            </div>
+          </div>
+        `;
+        
+        courtsContainer.appendChild(card);
+        
+        // Add time slots to this court
+        const slotsContainer = document.getElementById(`slots-court-${court.id}`);
+        
+        timeSlots.forEach(time => {
+          // Create a pseudo-random but consistent booking pattern
+          const hash = (court.id * timeSlots.indexOf(time)) % 10;
+          const isBooked = hash < 3; // 30% chance of being booked
+          
+          const slot = document.createElement('div');
+          slot.className = `time-slot${isBooked ? ' booked' : ''}`;
+          slot.textContent = time;
+          
+          if (!isBooked) {
+            slot.addEventListener('click', () => {
+              // Clear previous selection
+              document.querySelectorAll('.time-slot.selected').forEach(el => {
+                el.classList.remove('selected');
+              });
+              
+              // Select this slot
+              slot.classList.add('selected');
+              selectedCourt = court;
+              selectedTime = time;
+              selectedTimeElement = slot;
+              
+              // Open booking panel
+              openBookingPanel();
+            });
+          }
+          
+          slotsContainer.appendChild(slot);
+        });
+      });
+    }
+
+    // Open booking panel
+    function openBookingPanel() {
+      // Update booking details
+      const formattedDate = formatDateForDisplay(bookingDateInput.value);
+      
+      bookingDetails.innerHTML = `
+        <div class="detail-item">
+          <span class="detail-label">Court:</span>
+          <span>${selectedCourt.name}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Location:</span>
+          <span>${selectedCourt.location}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Date:</span>
+          <span>${formattedDate}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Time:</span>
+          <span>${selectedTime}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Price:</span>
+          <span>${selectedCourt.price}</span>
+        </div>
+      `;
+      
+      // Reset form and confirmation
+      bookingForm.reset();
+      bookingConfirmation.classList.remove('show');
+      confirmBtn.style.display = 'block';
+      
+      // Show panel and overlay
+      bookingPanel.classList.add('open');
+      overlay.classList.add('active');
+    }
+
+    // Generate booking reference
+    function generateReference() {
+      const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // removed similar looking characters
+      const numbers = '123456789'; // removed 0 to avoid confusion with O
+      
+      let reference = 'PB';
+      
+      // Add 2 random letters
+      for (let i = 0; i < 2; i++) {
+        reference += letters.charAt(Math.floor(Math.random() * letters.length));
+      }
+      
+      // Add 4 random numbers
+      for (let i = 0; i < 4; i++) {
+        reference += numbers.charAt(Math.floor(Math.random() * numbers.length));
+      }
+      
+      return reference;
+    }
+
+    // Event Listeners
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Update active button
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Update filter and display courts
+        activeFilter = button.getAttribute('data-filter');
+        displayCourts();
+      });
+    });
+
+    areaFilter.addEventListener('change', () => {
+      activeArea = areaFilter.value;
+      displayCourts();
+    });
+
+    bookingDateInput.addEventListener('change', () => {
+      selectedDate = new Date(bookingDateInput.value);
+      displayCourts();
+    });
+
+    bookingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      // Validate form
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+      
+      if (!name || !phone || !email) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      // Mark slot as booked
+      if (selectedTimeElement) {
+        selectedTimeElement.classList.remove('selected');
+        selectedTimeElement.classList.add('booked');
+        selectedTimeElement.removeEventListener('click', () => {});
+      }
+      
+      // Generate and display booking reference
+      const reference = generateReference();
+      referenceNumber.textContent = reference;
+      
+      // Show confirmation and hide form button
+      bookingConfirmation.classList.add('show');
+      confirmBtn.style.display = 'none';
+      
+      // Auto close after 3 seconds
+      setTimeout(() => {
+        closeBookingPanel();
+      }, 3000);
+    });
+
+    panelClose.addEventListener('click', closeBookingPanel);
+    overlay.addEventListener('click', closeBookingPanel);
+
+    function closeBookingPanel() {
+      bookingPanel.classList.remove('open');
+      overlay.classList.remove('active');
+    }
+
+    // Initialize
+    displayCourts();
+  </script>
+</body>
+</html>
