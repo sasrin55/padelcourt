@@ -150,16 +150,14 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: 
+      background-color: var(--pakistan-green);
+      background-image: 
         linear-gradient(135deg, rgba(1, 65, 28, 0.75) 0%, rgba(13, 93, 44, 0.7) 100%),
-        linear-gradient(45deg, transparent 30%, rgba(212, 175, 55, 0.1) 50%, transparent 70%),
-        radial-gradient(ellipse at top right, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at bottom left, rgba(212, 175, 55, 0.15) 0%, transparent 50%);
-      /* Replace this background with your AI-generated image:
-         background-image: url('your-ai-generated-padel-court-lahore.jpg');
-         background-size: cover;
-         background-position: center;
-      */
+        url('https://i.ibb.co/6c87GbmN/Chat-GPT-Image-Oct-18-2025-10-25-12-AM.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
     }
     
     .hero-pattern {
@@ -372,8 +370,10 @@
     
     /* Courts Section */
     .courts-section {
-      background: linear-gradient(to bottom, white 0%, #f8f9fa 100%);
+      background: linear-gradient(to bottom, white 0%, #fafbfc 50%, white 100%);
       padding: 60px 0 80px;
+      position: relative;
+      z-index: 2;
     }
     
     .section-header {
@@ -544,30 +544,41 @@
     }
     
     .time-slots {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
-      gap: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
       margin-top: 20px;
     }
     
     .time-slot {
-      padding: 14px;
-      text-align: center;
+      padding: 16px 20px;
+      text-align: left;
       border-radius: 12px;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
       background: #f0fdf4;
-      border: 2px solid transparent;
+      border: 2px solid #e0f2e9;
       color: var(--pakistan-green);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
     
     .time-slot:hover:not(.booked) {
       background: var(--pakistan-green);
       color: white;
-      transform: translateY(-2px);
+      transform: translateX(4px);
       box-shadow: 0 4px 12px rgba(1, 65, 28, 0.3);
+      border-color: var(--pakistan-green);
+    }
+    
+    .time-slot:hover:not(.booked) .time-slot-status {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
     }
     
     .time-slot.booked {
@@ -576,6 +587,7 @@
       cursor: not-allowed;
       text-decoration: line-through;
       opacity: 0.5;
+      border-color: #fecaca;
     }
     
     .time-slot.selected {
@@ -583,6 +595,57 @@
       color: white;
       border-color: var(--accent-gold);
       box-shadow: 0 4px 12px rgba(1, 65, 28, 0.3);
+    }
+    
+    .court-section {
+      margin-bottom: 24px;
+    }
+    
+    .court-section:last-child {
+      margin-bottom: 0;
+    }
+    
+    .court-number-header {
+      background: linear-gradient(135deg, var(--pakistan-green) 0%, var(--pakistan-light-green) 100%);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(1, 65, 28, 0.2);
+    }
+    
+    .time-slot-time {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .time-slot-time i {
+      font-size: 18px;
+    }
+    
+    .time-slot-status {
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    
+    .time-slot:not(.booked) .time-slot-status {
+      background: rgba(1, 65, 28, 0.1);
+      color: var(--pakistan-green);
+    }
+    
+    .time-slot.selected .time-slot-status {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
     }
     
     /* Panels */
@@ -1007,43 +1070,154 @@
     
     /* Responsive */
     @media (max-width: 768px) {
-      .hero {
-        height: 70vh;
-        min-height: 500px;
-      }
-      
-      .hero-title {
-        font-size: 48px;
-      }
-      
-      .hero-subtitle {
-        font-size: 18px;
+      .hero-image-placeholder {
+        background-attachment: scroll;
       }
       
       .container {
         padding: 0 20px;
       }
       
+      .logo {
+        font-size: 24px;
+      }
+      
+      .profile-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 18px;
+      }
+      
+      .hero {
+        height: 75vh;
+        min-height: 550px;
+      }
+      
+      .hero-content {
+        padding: 30px 20px;
+      }
+      
+      .hero-title {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+      
+      .hero-subtitle {
+        font-size: 18px;
+        margin-bottom: 32px;
+      }
+      
+      .hero-cta {
+        padding: 16px 32px;
+        font-size: 16px;
+      }
+      
+      .date-section {
+        padding: 50px 0 30px;
+      }
+      
       .date-swiper {
-        padding: 28px 20px;
-        gap: 20px;
+        padding: 32px 24px;
+        gap: 24px;
       }
       
       .date-nav-btn {
-        width: 50px;
-        height: 50px;
+        width: 56px;
+        height: 56px;
+        font-size: 20px;
       }
       
       .date-display {
-        min-width: auto;
+        min-width: 280px;
       }
       
       .date-main {
-        font-size: 28px;
+        font-size: 30px;
+      }
+      
+      .date-sub {
+        font-size: 16px;
+      }
+      
+      .section-title {
+        font-size: 36px;
+      }
+      
+      .section-subtitle {
+        font-size: 16px;
+      }
+      
+      .courts-section {
+        padding: 50px 0 70px;
+      }
+      
+      .controls-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+      }
+      
+      .filter-group {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .filter-btn {
+        flex: 1;
+        min-width: 110px;
+      }
+      
+      .area-select {
+        width: 100%;
       }
       
       .courts-grid {
         grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      
+      .court-card {
+        max-width: 100%;
+      }
+      
+      .court-header {
+        padding: 20px 24px;
+      }
+      
+      .court-title {
+        font-size: 20px;
+        margin-right: 80px;
+      }
+      
+      .court-body {
+        padding: 24px;
+      }
+      
+      .time-slots {
+        gap: 8px;
+      }
+      
+      .time-slot {
+        padding: 14px 16px;
+        font-size: 14px;
+      }
+      
+      .time-slot-time i {
+        font-size: 16px;
+      }
+      
+      .time-slot-status {
+        font-size: 11px;
+        padding: 5px 10px;
+      }
+      
+      .court-number-header {
+        font-size: 14px;
+        padding: 10px 16px;
+      }
+      
+      .court-section {
+        margin-bottom: 20px;
       }
       
       .panel {
@@ -1051,8 +1225,82 @@
         right: -100%;
       }
       
+      .panel-header {
+        padding: 32px 28px 40px;
+      }
+      
+      .panel-title {
+        font-size: 28px;
+      }
+      
+      .panel-content {
+        padding: 32px 28px;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      
+      .stat-value {
+        font-size: 32px;
+      }
+      
+      .booking-item {
+        padding: 20px;
+      }
+      
+      .invite-modal {
+        width: 95%;
+        max-width: 500px;
+      }
+      
+      .invite-modal-header {
+        padding: 28px 24px;
+      }
+      
+      .invite-modal-body {
+        padding: 28px 24px;
+      }
+      
+      .toast {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        max-width: none;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 40px;
+      }
+      
+      .date-main {
+        font-size: 24px;
+      }
+      
+      .date-display {
+        min-width: 240px;
+      }
+      
+      .section-title {
+        font-size: 30px;
+      }
+      
       .stats-grid {
         grid-template-columns: 1fr;
+      }
+      
+      .time-slot {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 12px 14px;
+      }
+      
+      .time-slot-status {
+        align-self: flex-end;
       }
     }
   </style>
@@ -1063,8 +1311,7 @@
     <div class="container">
       <div class="header-inner">
         <div class="logo">
-          <div class="logo-flag"></div>
-          PADELHAUS
+          🎾 PADELHAUS
         </div>
         <div class="header-actions">
           <button class="profile-btn" id="profile-btn">
@@ -1354,11 +1601,34 @@
         const card = document.createElement('div');
         card.className = 'court-card';
         
-        const slots = timeSlots.map(time => {
-          const key = `${court.id}-${formatDate(currentDate)}-${time}`;
-          const booked = bookings[key];
-          return `<div class="time-slot ${booked ? 'booked' : ''}" data-court="${court.id}" data-time="${time}">${time}</div>`;
-        }).join('');
+        // Generate sections for each court
+        let courtSectionsHTML = '';
+        
+        for (let courtNum = 1; courtNum <= court.courts; courtNum++) {
+          const slotsHTML = timeSlots.map(time => {
+            const key = `${court.id}-${courtNum}-${formatDate(currentDate)}-${time}`;
+            const booked = bookings[key];
+            return `
+              <div class="time-slot ${booked ? 'booked' : ''}" 
+                   data-court="${court.id}" 
+                   data-court-number="${courtNum}"
+                   data-time="${time}">
+                <div class="time-slot-time">
+                  <i class="fas fa-clock"></i>
+                  <span>${time}</span>
+                </div>
+                <div class="time-slot-status">${booked ? 'Booked' : 'Available'}</div>
+              </div>
+            `;
+          }).join('');
+          
+          courtSectionsHTML += `
+            <div class="court-section">
+              ${court.courts > 1 ? `<div class="court-number-header">Court ${courtNum}</div>` : ''}
+              <div class="time-slots">${slotsHTML}</div>
+            </div>
+          `;
+        }
 
         card.innerHTML = `
           <div class="court-header">
@@ -1371,7 +1641,7 @@
               <div class="info-item"><i class="fas fa-table-tennis"></i>${court.courts} court${court.courts > 1 ? 's' : ''}</div>
               <div class="info-item court-price"><i class="fas fa-tag"></i>${court.price}</div>
             </div>
-            <div class="time-slots">${slots}</div>
+            ${courtSectionsHTML}
           </div>
         `;
         
@@ -1385,15 +1655,22 @@
           
           selectedCourt = courts.find(c => c.id === parseInt(slot.dataset.court));
           selectedTime = slot.dataset.time;
+          const courtNumber = slot.dataset.courtNumber;
+          
+          // Store court number for booking
+          selectedCourt.selectedCourtNumber = courtNumber;
+          
           openBookingPanel();
         });
       });
     }
 
     function openBookingPanel() {
+      const courtNumberText = selectedCourt.courts > 1 ? ` - Court ${selectedCourt.selectedCourtNumber}` : '';
+      
       document.getElementById('booking-details').innerHTML = `
         <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 24px; border-radius: 16px; margin-bottom: 28px; border: 2px solid var(--pakistan-green);">
-          <div style="margin-bottom: 14px; font-weight: 700;"><i class="fas fa-building" style="color: var(--pakistan-green); margin-right: 8px;"></i>${selectedCourt.name}</div>
+          <div style="margin-bottom: 14px; font-weight: 700;"><i class="fas fa-building" style="color: var(--pakistan-green); margin-right: 8px;"></i>${selectedCourt.name}${courtNumberText}</div>
           <div style="margin-bottom: 14px; font-weight: 700;"><i class="fas fa-location-dot" style="color: var(--pakistan-green); margin-right: 8px;"></i>${selectedCourt.location}</div>
           <div style="margin-bottom: 14px; font-weight: 700;"><i class="fas fa-calendar" style="color: var(--pakistan-green); margin-right: 8px;"></i>${formatDateDisplay(currentDate)}</div>
           <div style="margin-bottom: 14px; font-weight: 700;"><i class="fas fa-clock" style="color: var(--pakistan-green); margin-right: 8px;"></i>${selectedTime}</div>
@@ -1423,11 +1700,13 @@
       }
       
       const bookingId = 'PH' + Math.random().toString(36).substr(2, 6).toUpperCase();
-      const key = `${selectedCourt.id}-${formatDate(currentDate)}-${selectedTime}`;
+      const courtNumber = selectedCourt.selectedCourtNumber || 1;
+      const key = `${selectedCourt.id}-${courtNumber}-${formatDate(currentDate)}-${selectedTime}`;
       
       const booking = {
         id: bookingId,
         court: selectedCourt,
+        courtNumber: courtNumber,
         date: formatDateDisplay(currentDate),
         dateValue: formatDate(currentDate),
         time: selectedTime,
@@ -1510,22 +1789,25 @@
       if (myBookings.length === 0) {
         bookingsList.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 60px 20px; font-weight: 600;">No bookings yet. Start playing!</p>';
       } else {
-        bookingsList.innerHTML = myBookings.map(b => `
-          <div class="booking-item">
-            <div class="booking-court-name">${b.court.name}</div>
-            <div class="booking-ref">${b.id}</div>
-            <div style="color: var(--text-light); font-size: 14px; margin: 12px 0; font-weight: 600;">
-              <div style="margin-bottom: 8px;"><i class="fas fa-calendar" style="margin-right: 8px;"></i>${b.date}</div>
-              <div><i class="fas fa-clock" style="margin-right: 8px;"></i>${b.time}</div>
+        bookingsList.innerHTML = myBookings.map(b => {
+          const courtNumberText = b.court.courts > 1 && b.courtNumber ? ` - Court ${b.courtNumber}` : '';
+          return `
+            <div class="booking-item">
+              <div class="booking-court-name">${b.court.name}${courtNumberText}</div>
+              <div class="booking-ref">${b.id}</div>
+              <div style="color: var(--text-light); font-size: 14px; margin: 12px 0; font-weight: 600;">
+                <div style="margin-bottom: 8px;"><i class="fas fa-calendar" style="margin-right: 8px;"></i>${b.date}</div>
+                <div><i class="fas fa-clock" style="margin-right: 8px;"></i>${b.time}</div>
+              </div>
+              <div class="booking-players">
+                ${b.players.map(p => `<div class="player-badge"><i class="fas fa-user"></i>${p.name}</div>`).join('')}
+              </div>
+              <button class="invite-btn" onclick="showInviteModal('${b.id}')">
+                <i class="fas fa-user-plus"></i> Invite Friends
+              </button>
             </div>
-            <div class="booking-players">
-              ${b.players.map(p => `<div class="player-badge"><i class="fas fa-user"></i>${p.name}</div>`).join('')}
-            </div>
-            <button class="invite-btn" onclick="showInviteModal('${b.id}')">
-              <i class="fas fa-user-plus"></i> Invite Friends
-            </button>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       }
     }
 
