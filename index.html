@@ -75,7 +75,7 @@
     
     .header-inner {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
     }
     
@@ -87,6 +87,41 @@
     
     .logo span {
       color: var(--primary);
+    }
+    
+    .profile-btn {
+      background-color: var(--primary);
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+    
+    .profile-btn:hover {
+      background-color: var(--primary-dark);
+      transform: scale(1.05);
+      box-shadow: var(--shadow);
+    }
+    
+    .profile-btn.logged-in::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 10px;
+      height: 10px;
+      background-color: var(--outdoor);
+      border-radius: 50%;
+      border: 2px solid white;
     }
     
     /* Main Content */
@@ -611,6 +646,262 @@
       visibility: visible;
     }
     
+    /* Profile Panel */
+    .profile-panel {
+      position: fixed;
+      top: 0;
+      right: -450px;
+      width: 450px;
+      height: 100%;
+      background-color: var(--card-bg);
+      box-shadow: var(--shadow-lg);
+      z-index: 100;
+      transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow-y: auto;
+    }
+    
+    .profile-panel.open {
+      right: 0;
+    }
+    
+    .profile-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 30px;
+      position: relative;
+    }
+    
+    .profile-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .profile-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 15px;
+    }
+    
+    .profile-name {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .profile-phone {
+      text-align: center;
+      opacity: 0.9;
+      font-size: 14px;
+    }
+    
+    .profile-content {
+      padding: 30px;
+    }
+    
+    /* Login Form */
+    .login-container {
+      padding: 30px;
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .login-icon {
+      font-size: 48px;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+    
+    .login-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 10px;
+    }
+    
+    .login-subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    
+    .phone-input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .phone-prefix {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dark);
+      font-weight: 600;
+      pointer-events: none;
+    }
+    
+    .phone-input {
+      width: 100%;
+      padding: 12px 15px 12px 50px;
+      border: 2px solid #E2E8F0;
+      border-radius: var(--radius);
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+    
+    .phone-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .phone-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .phone-hint i {
+      margin-right: 5px;
+    }
+    
+    /* Bookings List */
+    .bookings-section {
+      margin-top: 20px;
+    }
+    
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .bookings-count {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    
+    .booking-item {
+      background-color: var(--light-bg);
+      border-radius: var(--radius);
+      padding: 15px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--primary);
+      transition: var(--transition);
+    }
+    
+    .booking-item:hover {
+      transform: translateX(5px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .booking-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 10px;
+    }
+    
+    .booking-court-name {
+      font-weight: 600;
+      color: var(--secondary);
+      font-size: 16px;
+    }
+    
+    .booking-ref {
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-light);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    
+    .booking-details-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .booking-detail {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+    }
+    
+    .booking-detail i {
+      margin-right: 8px;
+      color: var(--primary);
+      width: 16px;
+    }
+    
+    .empty-bookings {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+    
+    .empty-bookings i {
+      font-size: 48px;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+    
+    .logout-btn {
+      background-color: #FFF;
+      border: 2px solid #E2E8F0;
+      color: var(--text-dark);
+      margin-top: 20px;
+    }
+    
+    .logout-btn:hover {
+      background-color: var(--light-bg);
+      border-color: var(--primary);
+    }
+    
+    .btn-secondary {
+      background-color: #FFF;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    
     /* Status indicator */
     .sync-status {
       position: fixed;
@@ -652,6 +943,20 @@
     
     /* Responsive Styles */
     @media (max-width: 768px) {
+      .header-inner {
+        padding: 0 10px;
+      }
+      
+      .logo {
+        font-size: 20px;
+      }
+      
+      .profile-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+      
       .date-swiper {
         gap: 15px;
         padding: 15px;
@@ -702,7 +1007,8 @@
         grid-template-columns: 1fr;
       }
       
-      .booking-panel {
+      .booking-panel,
+      .profile-panel {
         width: 100%;
         right: -100%;
       }
@@ -715,6 +1021,15 @@
       .time-slots {
         grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
       }
+      
+      .profile-header {
+        padding: 25px 20px;
+      }
+      
+      .profile-content,
+      .login-container {
+        padding: 20px;
+      }
     }
   </style>
 </head>
@@ -724,6 +1039,9 @@
     <div class="container">
       <div class="header-inner">
         <div class="logo">Padel<span>Lahore</span></div>
+        <button class="profile-btn" id="profile-btn" title="My Profile">
+          <i class="fas fa-user"></i>
+        </button>
       </div>
     </div>
   </header>
@@ -801,7 +1119,10 @@
       
       <div class="form-group">
         <label class="form-label" for="phone">Phone Number</label>
-        <input type="tel" class="form-control" id="phone" required>
+        <div class="phone-input-group">
+          <span class="phone-prefix">+92</span>
+          <input type="tel" class="phone-input" id="phone" placeholder="3001234567" maxlength="10" required>
+        </div>
       </div>
       
       <div class="form-group">
@@ -823,6 +1144,98 @@
 
   <!-- Overlay -->
   <div class="overlay" id="overlay"></div>
+
+  <!-- Profile Panel -->
+  <div class="profile-panel" id="profile-panel">
+    <!-- Login View -->
+    <div id="login-view" class="login-container">
+      <button class="profile-close" id="profile-close-login">&times;</button>
+      
+      <div class="login-header">
+        <div class="login-icon">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <h2 class="login-title">Welcome Back!</h2>
+        <p class="login-subtitle">Enter your phone number to access your bookings</p>
+      </div>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <div class="phone-input-group">
+            <span class="phone-prefix">+92</span>
+            <input 
+              type="tel" 
+              class="phone-input" 
+              id="login-phone" 
+              placeholder="3001234567"
+              maxlength="10"
+              pattern="[0-9]{10}"
+              required
+            >
+          </div>
+          <div class="phone-hint">
+            <i class="fas fa-info-circle"></i>
+            Enter your 10-digit mobile number without +92
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="login-name" 
+            placeholder="Enter your full name"
+            required
+          >
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Email (Optional)</label>
+          <input 
+            type="email" 
+            class="form-control" 
+            id="login-email" 
+            placeholder="your.email@example.com"
+          >
+        </div>
+        
+        <button type="submit" class="btn btn-block">
+          <i class="fas fa-sign-in-alt"></i> Continue
+        </button>
+      </form>
+    </div>
+    
+    <!-- Profile View -->
+    <div id="profile-view" style="display: none;">
+      <div class="profile-header">
+        <button class="profile-close" id="profile-close-main">&times;</button>
+        <div class="profile-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <h2 class="profile-name" id="profile-display-name">User Name</h2>
+        <p class="profile-phone" id="profile-display-phone">+92 300 1234567</p>
+      </div>
+      
+      <div class="profile-content">
+        <div class="bookings-section">
+          <div class="section-title">
+            My Bookings
+            <span class="bookings-count" id="bookings-count">0 bookings</span>
+          </div>
+          
+          <div id="user-bookings-list">
+            <!-- Bookings will be dynamically added here -->
+          </div>
+        </div>
+        
+        <button class="btn btn-block logout-btn" id="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Sync Status Indicator -->
   <div class="sync-status" id="sync-status">
@@ -978,6 +1391,23 @@
     const bookingConfirmation = document.getElementById('booking-confirmation');
     const referenceNumber = document.getElementById('reference-number');
     const syncStatus = document.getElementById('sync-status');
+    
+    // Profile elements
+    const profileBtn = document.getElementById('profile-btn');
+    const profilePanel = document.getElementById('profile-panel');
+    const profileCloseLogin = document.getElementById('profile-close-login');
+    const profileCloseMain = document.getElementById('profile-close-main');
+    const loginView = document.getElementById('login-view');
+    const profileView = document.getElementById('profile-view');
+    const loginForm = document.getElementById('login-form');
+    const loginPhone = document.getElementById('login-phone');
+    const loginName = document.getElementById('login-name');
+    const loginEmail = document.getElementById('login-email');
+    const profileDisplayName = document.getElementById('profile-display-name');
+    const profileDisplayPhone = document.getElementById('profile-display-phone');
+    const userBookingsList = document.getElementById('user-bookings-list');
+    const bookingsCount = document.getElementById('bookings-count');
+    const logoutBtn = document.getElementById('logout-btn');
 
     // Google Sheets Web App URL (optional - only if you want to save to sheets)
     const SHEETS_URL = 'YOUR_GOOGLE_SHEETS_WEB_APP_URL_HERE';
@@ -992,6 +1422,11 @@
     
     // Store all bookings in memory (resets on page reload)
     const bookings = {};
+    
+    // User management
+    let currentUser = null;
+    const users = {}; // Store users by phone number
+    const userBookings = {}; // Store bookings by user phone number
     
     // Set currentDate to today at midnight
     currentDate.setHours(0, 0, 0, 0);
@@ -1049,6 +1484,133 @@
       currentDate.setDate(currentDate.getDate() + 1);
       updateDateDisplay();
       displayCourts();
+    }
+    
+    // User Profile Functions
+    function openProfilePanel() {
+      if (currentUser) {
+        showProfileView();
+      } else {
+        showLoginView();
+      }
+      profilePanel.classList.add('open');
+      overlay.classList.add('active');
+    }
+    
+    function closeProfilePanel() {
+      profilePanel.classList.remove('open');
+      if (!bookingPanel.classList.contains('open')) {
+        overlay.classList.remove('active');
+      }
+    }
+    
+    function showLoginView() {
+      loginView.style.display = 'block';
+      profileView.style.display = 'none';
+    }
+    
+    function showProfileView() {
+      loginView.style.display = 'none';
+      profileView.style.display = 'block';
+      updateProfileDisplay();
+    }
+    
+    function loginUser(phone, name, email) {
+      const fullPhone = '+92' + phone;
+      
+      // Store or update user
+      if (!users[fullPhone]) {
+        users[fullPhone] = {
+          phone: fullPhone,
+          name: name,
+          email: email || '',
+          createdAt: new Date().toISOString()
+        };
+      } else {
+        // Update existing user info
+        users[fullPhone].name = name;
+        if (email) users[fullPhone].email = email;
+      }
+      
+      currentUser = users[fullPhone];
+      profileBtn.classList.add('logged-in');
+      
+      showSyncStatus('Welcome back, ' + name + '!', 'success');
+      showProfileView();
+    }
+    
+    function logoutUser() {
+      currentUser = null;
+      profileBtn.classList.remove('logged-in');
+      closeProfilePanel();
+      showSyncStatus('Logged out successfully', 'success');
+    }
+    
+    function updateProfileDisplay() {
+      if (!currentUser) return;
+      
+      profileDisplayName.textContent = currentUser.name;
+      profileDisplayPhone.textContent = formatPhoneForDisplay(currentUser.phone);
+      
+      displayUserBookings();
+    }
+    
+    function formatPhoneForDisplay(phone) {
+      // Format +923001234567 to +92 300 1234567
+      if (phone.startsWith('+92') && phone.length === 13) {
+        return `+92 ${phone.substring(3, 6)} ${phone.substring(6)}`;
+      }
+      return phone;
+    }
+    
+    function displayUserBookings() {
+      if (!currentUser) return;
+      
+      const userPhone = currentUser.phone;
+      const myBookings = userBookings[userPhone] || [];
+      
+      bookingsCount.textContent = `${myBookings.length} booking${myBookings.length !== 1 ? 's' : ''}`;
+      
+      if (myBookings.length === 0) {
+        userBookingsList.innerHTML = `
+          <div class="empty-bookings">
+            <i class="fas fa-calendar-times"></i>
+            <p>No bookings yet</p>
+            <p style="font-size: 14px; margin-top: 5px;">Book a court to get started!</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Sort bookings by date (newest first)
+      myBookings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      
+      userBookingsList.innerHTML = myBookings.map(booking => `
+        <div class="booking-item">
+          <div class="booking-item-header">
+            <div class="booking-court-name">${booking.courtName}</div>
+            <div class="booking-ref">${booking.bookingId}</div>
+          </div>
+          <div class="booking-details-list">
+            <div class="booking-detail">
+              <i class="fas fa-map-marker-alt"></i>
+              ${booking.courtLocation}
+            </div>
+            <div class="booking-detail">
+              <i class="fas fa-calendar"></i>
+              ${booking.bookingDate}
+            </div>
+            <div class="booking-detail">
+              <i class="fas fa-clock"></i>
+              ${booking.timeSlot}
+            </div>
+            <div class="booking-detail">
+              <i class="fas fa-tag"></i>
+              ${booking.price}
+            </div>
+          </div>
+        </div>
+      `).join('');
     }
 
     // Display courts based on filters
@@ -1206,6 +1768,14 @@
       
       // Reset form and confirmation
       bookingForm.reset();
+      
+      // Pre-fill form if user is logged in
+      if (currentUser) {
+        document.getElementById('name').value = currentUser.name;
+        document.getElementById('phone').value = currentUser.phone.substring(3); // Remove +92
+        document.getElementById('email').value = currentUser.email || '';
+      }
+      
       bookingConfirmation.classList.remove('show');
       confirmBtn.style.display = 'block';
       
@@ -1307,18 +1877,61 @@
       activeArea = areaFilter.value;
       displayCourts();
     });
+    
+    // Profile event listeners
+    profileBtn.addEventListener('click', openProfilePanel);
+    profileCloseLogin.addEventListener('click', closeProfilePanel);
+    profileCloseMain.addEventListener('click', closeProfilePanel);
+    
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const phone = loginPhone.value.trim();
+      const name = loginName.value.trim();
+      const email = loginEmail.value.trim();
+      
+      // Validate Pakistani phone number (10 digits)
+      if (!/^[0-9]{10}$/.test(phone)) {
+        showSyncStatus('Please enter a valid 10-digit phone number', 'error');
+        return;
+      }
+      
+      loginUser(phone, name, email);
+    });
+    
+    logoutBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to logout?')) {
+        logoutUser();
+      }
+    });
+    
+    // Only allow numbers in phone input
+    loginPhone.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
+    
+    // Also validate phone input in booking form
+    const bookingPhoneInput = document.getElementById('phone');
+    bookingPhoneInput.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    });
 
     bookingForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
       // Validate form
       const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
+      let phone = document.getElementById('phone').value;
       const email = document.getElementById('email').value;
       
       if (!name || !phone || !email) {
         alert('Please fill in all fields');
         return;
+      }
+      
+      // Format phone number
+      if (!phone.startsWith('+92')) {
+        phone = '+92' + phone.replace(/^0+/, ''); // Remove leading zeros and add +92
       }
       
       // Generate booking reference
@@ -1348,6 +1961,36 @@
       // Store the booking in memory
       bookings[bookingKey] = bookingData;
       
+      // If user is logged in or this phone matches a user, save to their profile
+      const userPhone = phone;
+      if (!users[userPhone]) {
+        // Auto-create user if booking without logging in
+        users[userPhone] = {
+          phone: userPhone,
+          name: name,
+          email: email,
+          createdAt: new Date().toISOString()
+        };
+      }
+      
+      // Add booking to user's bookings
+      if (!userBookings[userPhone]) {
+        userBookings[userPhone] = [];
+      }
+      userBookings[userPhone].push(bookingData);
+      
+      // If this is the current user, auto-login them
+      if (currentUser && currentUser.phone === userPhone) {
+        // Already logged in, just update display if profile is open
+        if (profilePanel.classList.contains('open')) {
+          updateProfileDisplay();
+        }
+      } else if (!currentUser) {
+        // Auto-login the user with their booking details
+        currentUser = users[userPhone];
+        profileBtn.classList.add('logged-in');
+      }
+      
       // Save to Google Sheets (if configured)
       saveBookingToSheet(bookingData);
       
@@ -1357,7 +2000,7 @@
       confirmBtn.style.display = 'none';
       
       // Show success notification
-      showSyncStatus('Booking confirmed! Slot updated.', 'success');
+      showSyncStatus('Booking confirmed! Check your profile to view all bookings.', 'success');
       
       // Refresh the courts display to show the newly booked slot
       setTimeout(() => {
@@ -1371,11 +2014,17 @@
     });
 
     panelClose.addEventListener('click', closeBookingPanel);
-    overlay.addEventListener('click', closeBookingPanel);
+    
+    overlay.addEventListener('click', () => {
+      closeBookingPanel();
+      closeProfilePanel();
+    });
 
     function closeBookingPanel() {
       bookingPanel.classList.remove('open');
-      overlay.classList.remove('active');
+      if (!profilePanel.classList.contains('open')) {
+        overlay.classList.remove('active');
+      }
     }
 
     // Initialize
