@@ -75,7 +75,7 @@
     
     .header-inner {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
     }
     
@@ -89,22 +89,98 @@
       color: var(--primary);
     }
     
-    .date-selector {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .date-input {
-      padding: 8px 12px;
-      border: 1px solid #E2E8F0;
-      border-radius: var(--radius-sm);
-      font-size: 14px;
-    }
-    
     /* Main Content */
     .main {
       padding: 30px 0;
+    }
+    
+    /* Date Swiper */
+    .date-swiper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+    
+    .date-nav-btn {
+      background-color: var(--primary);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .date-nav-btn:hover:not(:disabled) {
+      background-color: var(--primary-dark);
+      transform: scale(1.1);
+      box-shadow: var(--shadow);
+    }
+    
+    .date-nav-btn:disabled {
+      background-color: #E2E8F0;
+      color: var(--text-muted);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    
+    .date-display {
+      text-align: center;
+      min-width: 300px;
+    }
+    
+    .date-main {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 5px;
+    }
+    
+    .date-sub {
+      font-size: 16px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    
+    .date-today-badge {
+      display: inline-block;
+      background-color: var(--accent);
+      color: var(--secondary);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 10px;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .keyboard-hint {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 8px;
+      opacity: 0.7;
+    }
+    
+    .keyboard-hint i {
+      font-size: 11px;
     }
     
     .page-title {
@@ -168,6 +244,18 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
       gap: 20px;
+      animation: fadeInUp 0.5s ease;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     
     .court-card {
@@ -564,6 +652,39 @@
     
     /* Responsive Styles */
     @media (max-width: 768px) {
+      .date-swiper {
+        gap: 15px;
+        padding: 15px;
+      }
+      
+      .date-nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+      
+      .date-display {
+        min-width: auto;
+      }
+      
+      .date-main {
+        font-size: 20px;
+      }
+      
+      .date-sub {
+        font-size: 14px;
+      }
+      
+      .date-today-badge {
+        display: block;
+        margin-left: 0;
+        margin-top: 5px;
+      }
+      
+      .keyboard-hint {
+        display: none;
+      }
+      
       .controls-inner {
         flex-direction: column;
         align-items: stretch;
@@ -603,10 +724,6 @@
     <div class="container">
       <div class="header-inner">
         <div class="logo">Padel<span>Lahore</span></div>
-        <div class="date-selector">
-          <label for="booking-date">Date:</label>
-          <input type="date" id="booking-date" class="date-input">
-        </div>
       </div>
     </div>
   </header>
@@ -614,7 +731,28 @@
   <!-- Main Content -->
   <main class="main">
     <div class="container">
-      <h1 class="page-title">Book Padel Courts in Lahore</h1>
+      <!-- Date Swiper -->
+      <section class="date-swiper">
+        <button class="date-nav-btn" id="prev-date" title="Previous Day">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="date-display">
+          <div class="date-main" id="date-main">
+            <!-- Date will be inserted here -->
+          </div>
+          <div class="date-sub" id="date-sub">
+            <!-- Weekday will be inserted here -->
+          </div>
+          <div class="keyboard-hint">
+            <i class="fas fa-keyboard"></i> Use arrow keys to navigate
+          </div>
+        </div>
+        
+        <button class="date-nav-btn" id="next-date" title="Next Day">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </section>
       
       <!-- Controls -->
       <section class="controls">
@@ -827,7 +965,10 @@
     const courtsContainer = document.getElementById('courts-container');
     const filterButtons = document.querySelectorAll('.filter-btn');
     const areaFilter = document.getElementById('area-filter');
-    const bookingDateInput = document.getElementById('booking-date');
+    const prevDateBtn = document.getElementById('prev-date');
+    const nextDateBtn = document.getElementById('next-date');
+    const dateMainDisplay = document.getElementById('date-main');
+    const dateSubDisplay = document.getElementById('date-sub');
     const bookingPanel = document.getElementById('booking-panel');
     const overlay = document.getElementById('overlay');
     const panelClose = document.getElementById('panel-close');
@@ -845,18 +986,15 @@
     let activeFilter = 'all';
     let activeArea = 'all';
     let selectedCourt = null;
-    let selectedDate = new Date();
+    let currentDate = new Date();
     let selectedTime = null;
     let selectedTimeElement = null;
     
     // Store all bookings in memory (resets on page reload)
     const bookings = {};
-
-    // Set today's date
-    const today = new Date();
-    const formattedToday = formatDateForInput(today);
-    bookingDateInput.value = formattedToday;
-    bookingDateInput.min = formattedToday;
+    
+    // Set currentDate to today at midnight
+    currentDate.setHours(0, 0, 0, 0);
 
     // Format date for date input
     function formatDateForInput(date) {
@@ -867,10 +1005,50 @@
     }
 
     // Format date for display
-    function formatDateForDisplay(dateString) {
-      const date = new Date(dateString + 'T00:00:00');
+    function formatDateForDisplay(date) {
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       return date.toLocaleDateString('en-US', options);
+    }
+    
+    // Update date display
+    function updateDateDisplay() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const isToday = currentDate.getTime() === today.getTime();
+      
+      // Format main date display
+      const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
+      const mainDateStr = currentDate.toLocaleDateString('en-US', dateOptions);
+      
+      // Format weekday
+      const weekdayOptions = { weekday: 'long' };
+      const weekdayStr = currentDate.toLocaleDateString('en-US', weekdayOptions);
+      
+      dateMainDisplay.innerHTML = mainDateStr + (isToday ? ' <span class="date-today-badge">Today</span>' : '');
+      dateSubDisplay.textContent = weekdayStr;
+      
+      // Disable previous button if current date is today
+      prevDateBtn.disabled = currentDate.getTime() === today.getTime();
+    }
+    
+    // Navigate to previous day
+    function goToPreviousDay() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      if (currentDate.getTime() > today.getTime()) {
+        currentDate.setDate(currentDate.getDate() - 1);
+        updateDateDisplay();
+        displayCourts();
+      }
+    }
+    
+    // Navigate to next day
+    function goToNextDay() {
+      currentDate.setDate(currentDate.getDate() + 1);
+      updateDateDisplay();
+      displayCourts();
     }
 
     // Display courts based on filters
@@ -967,7 +1145,8 @@
         
         timeSlots.forEach(time => {
           // Check if this slot is actually booked
-          const bookingKey = `${court.id}-${bookingDateInput.value}-${time}`;
+          const dateStr = formatDateForInput(currentDate);
+          const bookingKey = `${court.id}-${dateStr}-${time}`;
           const isBooked = bookings[bookingKey] !== undefined;
           
           const slot = document.createElement('div');
@@ -1000,7 +1179,7 @@
     // Open booking panel
     function openBookingPanel() {
       // Update booking details
-      const formattedDate = formatDateForDisplay(bookingDateInput.value);
+      const formattedDate = formatDateForDisplay(currentDate);
       
       bookingDetails.innerHTML = `
         <div class="detail-item">
@@ -1109,6 +1288,9 @@
     }
 
     // Event Listeners
+    prevDateBtn.addEventListener('click', goToPreviousDay);
+    nextDateBtn.addEventListener('click', goToNextDay);
+    
     filterButtons.forEach(button => {
       button.addEventListener('click', () => {
         // Update active button
@@ -1123,12 +1305,6 @@
 
     areaFilter.addEventListener('change', () => {
       activeArea = areaFilter.value;
-      displayCourts();
-    });
-
-    bookingDateInput.addEventListener('change', () => {
-      selectedDate = new Date(bookingDateInput.value);
-      // Refresh courts to show availability for the new date
       displayCourts();
     });
 
@@ -1149,7 +1325,8 @@
       const bookingId = generateReference();
       
       // Create booking key
-      const bookingKey = `${selectedCourt.id}-${bookingDateInput.value}-${selectedTime}`;
+      const dateStr = formatDateForInput(currentDate);
+      const bookingKey = `${selectedCourt.id}-${dateStr}-${selectedTime}`;
       
       // Save booking data
       const bookingData = {
@@ -1158,8 +1335,8 @@
         courtName: selectedCourt.name,
         courtLocation: selectedCourt.location,
         courtType: selectedCourt.type,
-        bookingDate: formatDateForDisplay(bookingDateInput.value),
-        dateValue: bookingDateInput.value,
+        bookingDate: formatDateForDisplay(currentDate),
+        dateValue: dateStr,
         timeSlot: selectedTime,
         customerName: name,
         customerPhone: phone,
@@ -1203,7 +1380,24 @@
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
+      updateDateDisplay();
       displayCourts();
+    });
+    
+    // Keyboard navigation for date swiper
+    document.addEventListener('keydown', (e) => {
+      // Only handle arrow keys if booking panel is not open
+      if (!bookingPanel.classList.contains('open')) {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          if (!prevDateBtn.disabled) {
+            goToPreviousDay();
+          }
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          goToNextDay();
+        }
+      }
     });
   </script>
 </body>
