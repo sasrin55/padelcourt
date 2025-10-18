@@ -522,8 +522,8 @@
       opacity: 1;
       visibility: visible;
     }
-
-    /* Status indicator for Google Sheets sync */
+    
+    /* Status indicator */
     .sync-status {
       position: fixed;
       bottom: 20px;
@@ -537,22 +537,27 @@
       z-index: 80;
       animation: fadeIn 0.3s;
     }
-
+    
     .sync-status.show {
       display: flex;
       align-items: center;
     }
-
+    
     .sync-status.success {
       color: var(--outdoor);
       border-left: 3px solid var(--outdoor);
     }
-
+    
     .sync-status.error {
       color: var(--booked);
       border-left: 3px solid var(--booked);
     }
-
+    
+    .sync-status.loading {
+      color: var(--indoor);
+      border-left: 3px solid var(--indoor);
+    }
+    
     .sync-status i {
       margin-right: 8px;
     }
@@ -833,8 +838,8 @@
     const referenceNumber = document.getElementById('reference-number');
     const syncStatus = document.getElementById('sync-status');
 
-    // Google Sheets Web App URL
-    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxWhXSq8XaJ1W2DJptkhvJeLIUnpAOMQB-vuu-sRqnPlnXF0rgcW_D0zvQpTNpmwnPa/exec';
+    // Google Sheets Web App URL (optional - only if you want to save to sheets)
+    const SHEETS_URL = 'YOUR_GOOGLE_SHEETS_WEB_APP_URL_HERE';
 
     // App State
     let activeFilter = 'all';
@@ -843,6 +848,9 @@
     let selectedDate = new Date();
     let selectedTime = null;
     let selectedTimeElement = null;
+    
+    // Store all bookings in memory (resets on page reload)
+    const bookings = {};
 
     // Set today's date
     const today = new Date();
@@ -860,7 +868,7 @@
 
     // Format date for display
     function formatDateForDisplay(dateString) {
-      const date = new Date(dateString);
+      const date = new Date(dateString + 'T00:00:00');
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       return date.toLocaleDateString('en-US', options);
     }
@@ -958,9 +966,9 @@
         const slotsContainer = document.getElementById(`slots-court-${court.id}`);
         
         timeSlots.forEach(time => {
-          // Create a pseudo-random but consistent booking pattern
-          const hash = (court.id * timeSlots.indexOf(time)) % 10;
-          const isBooked = hash < 3; // 30% chance of being booked
+          // Check if this slot is actually booked
+          const bookingKey = `${court.id}-${bookingDateInput.value}-${time}`;
+          const isBooked = bookings[bookingKey] !== undefined;
           
           const slot = document.createElement('div');
           slot.className = `time-slot${isBooked ? ' booked' : ''}`;
@@ -1029,8 +1037,8 @@
 
     // Generate booking reference
     function generateReference() {
-      const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // removed similar looking characters
-      const numbers = '123456789'; // removed 0 to avoid confusion with O
+      const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+      const numbers = '123456789';
       
       let reference = 'PB';
       
@@ -1047,15 +1055,21 @@
       return reference;
     }
 
-    // Function to send booking data to Google Sheets
+    // Function to send booking data to Google Sheets (optional)
     function saveBookingToSheet(bookingData) {
+      // Only try to save if URL is configured
+      if (SHEETS_URL === 'YOUR_GOOGLE_SHEETS_WEB_APP_URL_HERE') {
+        console.log('Google Sheets URL not configured');
+        return;
+      }
+      
       // Show loading status
       showSyncStatus('Saving booking...', 'loading');
       
       // Send data to Google Sheets
       fetch(SHEETS_URL, {
         method: 'POST',
-        mode: 'no-cors', // Important for CORS issues
+        mode: 'no-cors',
         cache: 'no-cache',
         headers: {
           'Content-Type': 'application/json',
@@ -1064,39 +1078,19 @@
       })
       .then(response => {
         console.log('Booking request sent to Google Sheets');
-        showSyncStatus('Booking saved successfully!', 'success');
       })
       .catch(error => {
         console.error('Error saving booking to Google Sheets:', error);
-        showSyncStatus('Error saving to database. Booking saved locally.', 'error');
-        // Save booking locally as backup
-        backupBookingLocally(bookingData);
       });
-    }
-
-    // Backup function for when Google Sheets is unavailable
-    function backupBookingLocally(bookingData) {
-      // Get existing bookings from localStorage
-      const existingBookings = JSON.parse(localStorage.getItem('padelBookings') || '[]');
-      
-      // Add new booking
-      existingBookings.push({
-        ...bookingData,
-        savedToSheet: false,
-        timestamp: new Date().toISOString()
-      });
-      
-      // Save back to localStorage
-      localStorage.setItem('padelBookings', JSON.stringify(existingBookings));
-      console.log('Booking saved to local backup');
     }
 
     // Show sync status notification
     function showSyncStatus(message, type) {
       syncStatus.innerHTML = '';
-      syncStatus.classList.remove('success', 'error');
+      syncStatus.classList.remove('success', 'error', 'loading');
       
       if (type === 'loading') {
+        syncStatus.classList.add('loading');
         syncStatus.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message}`;
       } else if (type === 'success') {
         syncStatus.classList.add('success');
@@ -1108,10 +1102,10 @@
       
       syncStatus.classList.add('show');
       
-      // Hide after 5 seconds
+      // Hide after 3 seconds
       setTimeout(() => {
         syncStatus.classList.remove('show');
-      }, 5000);
+      }, 3000);
     }
 
     // Event Listeners
@@ -1134,6 +1128,7 @@
 
     bookingDateInput.addEventListener('change', () => {
       selectedDate = new Date(bookingDateInput.value);
+      // Refresh courts to show availability for the new date
       displayCourts();
     });
 
@@ -1153,34 +1148,44 @@
       // Generate booking reference
       const bookingId = generateReference();
       
-      // Prepare booking data
+      // Create booking key
+      const bookingKey = `${selectedCourt.id}-${bookingDateInput.value}-${selectedTime}`;
+      
+      // Save booking data
       const bookingData = {
         bookingId: bookingId,
+        courtId: selectedCourt.id,
         courtName: selectedCourt.name,
         courtLocation: selectedCourt.location,
         courtType: selectedCourt.type,
         bookingDate: formatDateForDisplay(bookingDateInput.value),
+        dateValue: bookingDateInput.value,
         timeSlot: selectedTime,
         customerName: name,
         customerPhone: phone,
         customerEmail: email,
-        price: selectedCourt.price
+        price: selectedCourt.price,
+        timestamp: new Date().toISOString()
       };
       
-      // Save to Google Sheets
-      saveBookingToSheet(bookingData);
+      // Store the booking in memory
+      bookings[bookingKey] = bookingData;
       
-      // Mark slot as booked
-      if (selectedTimeElement) {
-        selectedTimeElement.classList.remove('selected');
-        selectedTimeElement.classList.add('booked');
-        selectedTimeElement.removeEventListener('click', () => {});
-      }
+      // Save to Google Sheets (if configured)
+      saveBookingToSheet(bookingData);
       
       // Display confirmation
       referenceNumber.textContent = bookingId;
       bookingConfirmation.classList.add('show');
       confirmBtn.style.display = 'none';
+      
+      // Show success notification
+      showSyncStatus('Booking confirmed! Slot updated.', 'success');
+      
+      // Refresh the courts display to show the newly booked slot
+      setTimeout(() => {
+        displayCourts();
+      }, 500);
       
       // Auto close after 3 seconds
       setTimeout(() => {
@@ -1196,53 +1201,10 @@
       overlay.classList.remove('active');
     }
 
-    // Function to retry sending unsaved bookings
-    function retrySendingUnsavedBookings() {
-      const unsavedBookings = JSON.parse(localStorage.getItem('padelBookings') || '[]')
-        .filter(booking => !booking.savedToSheet);
-      
-      if (unsavedBookings.length > 0) {
-        console.log(`Attempting to send ${unsavedBookings.length} unsaved bookings...`);
-        
-        unsavedBookings.forEach((booking, index) => {
-          setTimeout(() => {
-            fetch(SHEETS_URL, {
-              method: 'POST',
-              mode: 'no-cors',
-              cache: 'no-cache',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(booking)
-            })
-            .then(() => {
-              console.log(`Successfully sent booking ${booking.bookingId}`);
-              // Mark as saved in local storage
-              const allBookings = JSON.parse(localStorage.getItem('padelBookings') || '[]');
-              const bookingIndex = allBookings.findIndex(b => b.bookingId === booking.bookingId);
-              if (bookingIndex !== -1) {
-                allBookings[bookingIndex].savedToSheet = true;
-                localStorage.setItem('padelBookings', JSON.stringify(allBookings));
-              }
-            })
-            .catch(error => {
-              console.error(`Failed to send booking ${booking.bookingId}:`, error);
-            });
-          }, index * 2000); // Stagger requests to avoid overloading
-        });
-      }
-    }
-
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       displayCourts();
-      
-      // Try to send any unsaved bookings when page loads
-      retrySendingUnsavedBookings();
     });
-
-    // Check for unsaved bookings periodically
-    setInterval(retrySendingUnsavedBookings, 5 * 60 * 1000); // Check every 5 minutes
   </script>
 </body>
 </html>
