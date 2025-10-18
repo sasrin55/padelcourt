@@ -902,6 +902,141 @@
       color: white;
     }
     
+    /* SMS Preview */
+    .sms-preview {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 0;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      z-index: 150;
+      width: 90%;
+      max-width: 400px;
+      display: none;
+      animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .sms-preview.show {
+      display: block;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+    
+    .sms-header {
+      background: linear-gradient(135deg, var(--outdoor) 0%, #27ae60 100%);
+      color: white;
+      padding: 20px;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .sms-icon {
+      font-size: 32px;
+    }
+    
+    .sms-header-text h3 {
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+    
+    .sms-header-text p {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    
+    .sms-body {
+      padding: 25px;
+    }
+    
+    .sms-phone-display {
+      background-color: var(--light-bg);
+      border-radius: var(--radius);
+      padding: 15px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--outdoor);
+    }
+    
+    .sms-phone-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+    
+    .sms-phone-number {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--secondary);
+    }
+    
+    .sms-message-preview {
+      background-color: #F8F9FA;
+      border-radius: var(--radius);
+      padding: 15px;
+      margin-bottom: 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-dark);
+      border: 1px solid #E2E8F0;
+      white-space: pre-line;
+    }
+    
+    .sms-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .sms-actions button {
+      flex: 1;
+    }
+    
+    .sms-note {
+      margin-top: 15px;
+      padding: 12px;
+      background-color: var(--primary-light);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      color: var(--text-muted);
+      border-left: 3px solid var(--primary);
+    }
+    
+    .sms-note i {
+      color: var(--primary);
+      margin-right: 5px;
+    }
+    
+    .overlay-dark {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 140;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    
+    .overlay-dark.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
     /* Status indicator */
     .sync-status {
       position: fixed;
@@ -1030,6 +1165,37 @@
       .login-container {
         padding: 20px;
       }
+      
+      .sms-preview {
+        width: 95%;
+        max-width: 350px;
+      }
+      
+      .sms-header {
+        padding: 15px;
+      }
+      
+      .sms-icon {
+        font-size: 28px;
+      }
+      
+      .sms-header-text h3 {
+        font-size: 16px;
+      }
+      
+      .sms-body {
+        padding: 20px;
+      }
+      
+      .sms-message-preview {
+        font-size: 12px;
+        max-height: 250px;
+        overflow-y: auto;
+      }
+      
+      .sms-actions {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -1130,6 +1296,13 @@
         <input type="email" class="form-control" id="email" required>
       </div>
       
+      <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+        <input type="checkbox" id="sms-consent" checked style="width: auto; cursor: pointer;">
+        <label for="sms-consent" style="margin: 0; cursor: pointer; font-size: 14px; color: var(--text-muted);">
+          <i class="fas fa-sms" style="color: var(--primary);"></i> Send me SMS confirmation
+        </label>
+      </div>
+      
       <button type="submit" class="btn btn-block" id="confirm-btn">Confirm Booking</button>
     </form>
     
@@ -1139,11 +1312,50 @@
       </div>
       <p>Your booking has been successfully confirmed!</p>
       <div class="reference-number" id="reference-number">PB123456</div>
+      <p style="font-size: 14px; margin-top: 15px; color: var(--text-muted);">
+        <i class="fas fa-sms"></i> SMS confirmation will be sent shortly
+      </p>
     </div>
   </div>
 
   <!-- Overlay -->
   <div class="overlay" id="overlay"></div>
+  <div class="overlay-dark" id="overlay-dark"></div>
+
+  <!-- SMS Preview Modal -->
+  <div class="sms-preview" id="sms-preview">
+    <div class="sms-header">
+      <div class="sms-icon">
+        <i class="fas fa-sms"></i>
+      </div>
+      <div class="sms-header-text">
+        <h3>SMS Confirmation</h3>
+        <p>Sending booking confirmation...</p>
+      </div>
+    </div>
+    <div class="sms-body">
+      <div class="sms-phone-display">
+        <div class="sms-phone-label">Sending to:</div>
+        <div class="sms-phone-number" id="sms-phone-display">+92 300 1234567</div>
+      </div>
+      
+      <div class="sms-message-preview" id="sms-message-content">
+        <!-- Message will be inserted here -->
+      </div>
+      
+      <div class="sms-actions">
+        <button class="btn btn-secondary" id="sms-close-btn">Close</button>
+        <button class="btn" id="sms-send-btn">
+          <i class="fas fa-paper-plane"></i> Send SMS
+        </button>
+      </div>
+      
+      <div class="sms-note">
+        <i class="fas fa-info-circle"></i>
+        <strong>Demo Mode:</strong> This is a preview of the SMS. To send real SMS messages, connect a service like Twilio, MSG91, or Telenor SMS API.
+      </div>
+    </div>
+  </div>
 
   <!-- Profile Panel -->
   <div class="profile-panel" id="profile-panel">
@@ -1391,6 +1603,14 @@
     const bookingConfirmation = document.getElementById('booking-confirmation');
     const referenceNumber = document.getElementById('reference-number');
     const syncStatus = document.getElementById('sync-status');
+    
+    // SMS elements
+    const smsPreview = document.getElementById('sms-preview');
+    const overlayDark = document.getElementById('overlay-dark');
+    const smsPhoneDisplay = document.getElementById('sms-phone-display');
+    const smsMessageContent = document.getElementById('sms-message-content');
+    const smsCloseBtn = document.getElementById('sms-close-btn');
+    const smsSendBtn = document.getElementById('sms-send-btn');
     
     // Profile elements
     const profileBtn = document.getElementById('profile-btn');
@@ -1856,6 +2076,104 @@
         syncStatus.classList.remove('show');
       }, 3000);
     }
+    
+    // SMS Functions
+    function generateSMSMessage(bookingData) {
+      const message = `✅ BOOKING CONFIRMED
+
+🎾 PadelLahore Booking
+━━━━━━━━━━━━━━━━━━━━
+👤 Name: ${bookingData.customerName}
+📍 Court: ${bookingData.courtName}
+📌 Location: ${bookingData.courtLocation}
+📅 Date: ${bookingData.bookingDate}
+🕐 Time: ${bookingData.timeSlot}
+💰 Price: ${bookingData.price}
+🎫 Ref: ${bookingData.bookingId}
+━━━━━━━━━━━━━━━━━━━━
+
+Please arrive 10 minutes early.
+
+Questions? Visit padelcafe.pk
+
+Thank you for choosing PadelLahore! 🏆`;
+      
+      return message;
+    }
+    
+    function showSMSPreview(bookingData) {
+      const message = generateSMSMessage(bookingData);
+      
+      smsPhoneDisplay.textContent = formatPhoneForDisplay(bookingData.customerPhone);
+      smsMessageContent.textContent = message;
+      
+      // Show modal
+      smsPreview.classList.add('show');
+      overlayDark.classList.add('active');
+      
+      // Store booking data for sending
+      smsPreview.dataset.bookingData = JSON.stringify(bookingData);
+    }
+    
+    function closeSMSPreview() {
+      smsPreview.classList.remove('show');
+      overlayDark.classList.remove('active');
+    }
+    
+    async function sendSMS(bookingData) {
+      // This is where you would integrate with an SMS service
+      // For Pakistani numbers, you can use:
+      // - Twilio (international)
+      // - MSG91 (supports Pakistan)
+      // - Telenor SMS API (local)
+      // - Jazz SMS API (local)
+      
+      const message = generateSMSMessage(bookingData);
+      const phone = bookingData.customerPhone;
+      
+      // Example integration structure (commented out - needs backend):
+      /*
+      try {
+        const response = await fetch('YOUR_BACKEND_SMS_ENDPOINT', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            phone: phone,
+            message: message,
+            apiKey: 'YOUR_API_KEY'
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showSyncStatus('SMS sent successfully! ✓', 'success');
+        } else {
+          showSyncStatus('SMS failed to send', 'error');
+        }
+      } catch (error) {
+        console.error('SMS Error:', error);
+        showSyncStatus('SMS service unavailable', 'error');
+      }
+      */
+      
+      // Demo mode - simulate sending
+      showSyncStatus('Sending SMS...', 'loading');
+      
+      setTimeout(() => {
+        showSyncStatus(`SMS sent to ${formatPhoneForDisplay(phone)} ✓`, 'success');
+        closeSMSPreview();
+        
+        // Log the message that would be sent
+        console.log('═══════════════════════════════════');
+        console.log('📱 SMS WOULD BE SENT TO:', phone);
+        console.log('═══════════════════════════════════');
+        console.log(message);
+        console.log('═══════════════════════════════════');
+      }, 1500);
+    }
 
     // Event Listeners
     prevDateBtn.addEventListener('click', goToPreviousDay);
@@ -1915,6 +2233,28 @@
     bookingPhoneInput.addEventListener('input', (e) => {
       e.target.value = e.target.value.replace(/[^0-9]/g, '');
     });
+    
+    // SMS event listeners
+    smsCloseBtn.addEventListener('click', () => {
+      closeSMSPreview();
+      // Close booking panel after closing SMS
+      setTimeout(() => {
+        closeBookingPanel();
+      }, 300);
+    });
+    
+    smsSendBtn.addEventListener('click', () => {
+      const bookingData = JSON.parse(smsPreview.dataset.bookingData);
+      sendSMS(bookingData);
+    });
+    
+    overlayDark.addEventListener('click', () => {
+      closeSMSPreview();
+      // Close booking panel after closing SMS
+      setTimeout(() => {
+        closeBookingPanel();
+      }, 300);
+    });
 
     bookingForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -1923,6 +2263,7 @@
       const name = document.getElementById('name').value;
       let phone = document.getElementById('phone').value;
       const email = document.getElementById('email').value;
+      const smsConsent = document.getElementById('sms-consent').checked;
       
       if (!name || !phone || !email) {
         alert('Please fill in all fields');
@@ -1955,7 +2296,8 @@
         customerPhone: phone,
         customerEmail: email,
         price: selectedCourt.price,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        smsConsent: smsConsent
       };
       
       // Store the booking in memory
@@ -2000,17 +2342,33 @@
       confirmBtn.style.display = 'none';
       
       // Show success notification
-      showSyncStatus('Booking confirmed! Check your profile to view all bookings.', 'success');
+      showSyncStatus('Booking confirmed!', 'success');
+      
+      // Show SMS preview only if consent given
+      if (smsConsent) {
+        setTimeout(() => {
+          showSMSPreview(bookingData);
+        }, 800);
+      } else {
+        // If no SMS, just close the panel after a delay
+        setTimeout(() => {
+          closeBookingPanel();
+        }, 3000);
+      }
       
       // Refresh the courts display to show the newly booked slot
       setTimeout(() => {
         displayCourts();
       }, 500);
       
-      // Auto close after 3 seconds
-      setTimeout(() => {
-        closeBookingPanel();
-      }, 3000);
+      // Auto close booking panel after SMS is handled (if SMS enabled)
+      if (smsConsent) {
+        setTimeout(() => {
+          if (!smsPreview.classList.contains('show')) {
+            closeBookingPanel();
+          }
+        }, 3000);
+      }
     });
 
     panelClose.addEventListener('click', closeBookingPanel);
